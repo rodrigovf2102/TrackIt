@@ -1,54 +1,55 @@
 import Icone from '../Assets/Img/Icone.png'
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom';
-import { postLogin } from '../Services/TrackIt';
+import { postLogin, setToken } from '../Services/TrackIt';
 import { useState } from 'react';
 import { Grid } from 'react-loader-spinner';
 
 export default function Login() {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [login,setLogin] = useState({email:"",password:""});
     const [corEntrar, setCorEntrar] = useState(1)
     const [disableForm, setDisableForm] = useState(false);
+    const navigate = useNavigate();
 
     function loginInfo(event) {
         event.preventDefault();
     }
 
     function Login() {
-        setCorEntrar(0.7);
+        setCorEntrar(0.6);
         setDisableForm(true);
-        const login = { email: email, password: password };
         const promisse = postLogin(login);
-
-        promisse.then(Autorizado);
-        promisse.catch(Desautorizado);
+        promisse.then(autorizado);
+        promisse.catch(desautorizado);
     }
 
-    function Desautorizado() {
+    function desautorizado() {
         alert("Usuário ou senha incorreto");
         setCorEntrar(1);
         setDisableForm(false);
     }
 
-    function Autorizado() {
+    function autorizado(response) {
+        console.log(response.data.token);
+        setToken(response.data.token);
         setDisableForm(false);
-        useNavigate("/hoje");
+        setCorEntrar(1);
+        navigate('/hoje');
     }
 
     return (
         <Container>
-            <img src={Icone} />
+            <img alt="1" src={Icone} />
             <Form onSubmit={loginInfo}>
-                <Input type="text" placeholder=' Email' onChange={event => setEmail(event.target.value)} 
-                                   disabled={disableForm} required />
-                <Input type="password" placeholder=' Senha' onChange={event => setPassword(event.target.value)} 
+                <Input type="text" placeholder=' Email' onChange={event => setLogin({...login, email : event.target.value})} 
+                                   disabled={disableForm} required/>
+                <Input type="password" placeholder=' Senha' onChange={event => setLogin({...login, password : event.target.value})} 
                                    disabled={disableForm} required />
                 <Entrar cor={corEntrar} onClick={Login} disabled={disableForm} type="submit">
                     {disableForm ? <Grid color='white' radius="8" heigth="100"/> :"Entrar"}
                 </Entrar>
-                <Link to="/cadastro"><Cadastro>Não tem uma conta? Cadastre-se</Cadastro></Link>
+                <Link to="/cadastro"><Cadastrar>Não tem uma conta? Cadastre-se</Cadastrar></Link>
             </Form>
         </Container>
     );
@@ -91,11 +92,11 @@ align-items: center;
 overflow-y: hidden;
 `
 
-const Cadastro = styled.div`
+const Cadastrar = styled.div`
 text-decoration-line: underline;
 width: 232px;
 color: #52B6FF;
 font-size: 14px;
 margin-top: 25px;
 `
-
+export {Container,Form,Input,Entrar,Cadastrar};

@@ -1,10 +1,15 @@
 import axios from 'axios';
 
+let token;
 const Base_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit';
 
 function postLogin(login) {
     const promise = axios.post(`${Base_URL}/auth/login`,login);
     return promise;
+}
+
+function setToken(toke){
+    token=toke;
 }
 
 function postCadastro(cadastro) {
@@ -23,4 +28,4 @@ function getHabitos(){
 }
 
 
-export {postLogin,postCadastro};
+export {postLogin,postCadastro, setToken};
