@@ -1,9 +1,10 @@
 import Icone from '../Assets/Img/Icone.png'
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom';
-import { postLogin, setToken } from '../Services/TrackIt';
-import { useState } from 'react';
+import {postLogin, setToken} from '../Services/TrackIt';
+import { useState, useContext } from 'react';
 import { Grid } from 'react-loader-spinner';
+import UserContext from '../context/UserContext';
 
 export default function Login() {
 
@@ -11,6 +12,7 @@ export default function Login() {
     const [corEntrar, setCorEntrar] = useState(1)
     const [disableForm, setDisableForm] = useState(false);
     const navigate = useNavigate();
+    const {taks,setTasks} = useContext(UserContext);
 
     function loginInfo(event) {
         event.preventDefault();
@@ -31,8 +33,8 @@ export default function Login() {
     }
 
     function autorizado(response) {
-        console.log(response.data.token);
         setToken(response.data.token);
+        setTasks({...response.data});
         setDisableForm(false);
         setCorEntrar(1);
         navigate('/hoje');
