@@ -20,6 +20,7 @@ time, mark, audio, video {
 	border: 0;
 	font-size: 100%;
 	vertical-align: baseline;
+	text-decoration: none;
 }
 
 article, aside, details, figcaption, figure, 

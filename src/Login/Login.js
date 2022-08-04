@@ -33,7 +33,6 @@ export default function Login() {
     }
 
     function autorizado(response) {
-        setToken(response.data.token);
         setTasks({...response.data});
         setDisableForm(false);
         setCorEntrar(1);

@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import { useLocation, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 export default function Fundo() {
 
@@ -19,7 +21,12 @@ export default function Fundo() {
     return (
         <Menu displayMenu={displayMenu}>
             <Link to="/habitos"><Itens>Hábitos</Itens></Link>
-            <Link to="/hoje"><div>Hoje</div></Link>
+            <Link to="/hoje">
+                <Circulo>
+                    <CircularProgressbar styles={buildStyles(
+                        {textColor:'#FFFFFF', pathColor:'#FFFFFF', trailColor:'#52B6FF'})} value={10} text={`Hoje`}/>
+                </Circulo>
+            </Link>
             <Link to="/historico"><Itens>Histórico</Itens></Link>
         </Menu>
     )
@@ -39,6 +46,13 @@ const Menu = styled.div`
 
 const Itens = styled.div`
     font-size: 18px;
-    font-family: 'Lexend Deca', sans-serif;
     color: #52B6FF;
+`
+
+const Circulo = styled.div`
+    width: 91px;
+    height: 91px;
+    margin-bottom: 60px;
+    background-color: #52B6FF;
+    border-radius: 50%;
 `
