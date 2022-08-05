@@ -21,7 +21,7 @@ export default function Hoje() {
 
     const { tasks, setTasks } = useContext(UserContext);
     const [habitos, setHabitos] = useState([]);
-    const { habitTasks,setHabitTasks} = useContext(HabitContext);
+    const { habitTasks, setHabitTasks } = useContext(HabitContext);
 
     const config = {
         headers: {
@@ -33,13 +33,14 @@ export default function Hoje() {
         const promise = getHabitosHoje(config);
         promise.then(autorizado)
         promise.catch(desautorizado)
+        setHabitTasks(0);
     }, [])
 
     useEffect(() => {
         let total = habitos.length;
-        let concluido = habitos.filter(habito=>habito.done===true).length;
-        let percentual = (100*concluido/total).toFixed(0);
-        setHabitTasks(percentual);
+        let concluido = habitos.filter(habito => habito.done === true).length;
+        let percentual = (100 * concluido / total).toFixed(0);
+        if(habitos.length!==0) {setHabitTasks(percentual);}
     }, [habitos])
 
     function autorizado(response) {
@@ -55,39 +56,40 @@ export default function Hoje() {
 
         if (habitos[index].done === true) { habitos[index].currentSequence += 1 }
         if (habitos[index].done === false) {
-            if(habitos[index].highestSequence === habitos[index].currentSequence){
-                habitos[index].highestSequence-=1;
+            if (habitos[index].highestSequence === habitos[index].currentSequence) {
+                habitos[index].highestSequence -= 1;
             }
-            habitos[index].currentSequence -= 1 
+            habitos[index].currentSequence -= 1
         }
         if (habitos[index].currentSequence > habitos[index].highestSequence) {
             habitos[index].highestSequence = habitos[index].currentSequence;
         }
         setHabitos([...habitos]);
 
-        if (habitos[index].done === true){
-            const promise = postHabitosFeitoHoje(habitos[index],config,habitos[index].id);
+        if (habitos[index].done === true) {
+            const promise = postHabitosFeitoHoje(habitos[index], config, habitos[index].id);
             promise.then();
             promise.catch(desautorizado);
         }
-        if (habitos[index].done === false){
-            const promise = postHabitosDesfeitoHoje(habitos[index],config,habitos[index].id);
+        if (habitos[index].done === false) {
+            const promise = postHabitosDesfeitoHoje(habitos[index], config, habitos[index].id);
             promise.then();
             promise.catch(desautorizado);
         }
-        
     }
 
+    console.log(habitTasks);
     return (
         <Container>
             <Data>{weekDay},{` ${now.$D}/${now.$M}`}</Data>
-            {habitTasks==0  ? 
-            <Texto>
-                Nenhum hábito concluído ainda
-            </Texto> : 
-            <TextoVerde>
-                {habitTasks}% dos hábitos concuídos
-            </TextoVerde>}
+            {habitTasks!=0 ?
+                <TextoVerde>
+                    {habitTasks}% dos hábitos concuídos
+                </TextoVerde> :
+                <Texto>
+                    Nenhum hábito concluído ainda
+                </Texto>}
+
             {habitos.map((habito, index) => (
                 <Habito>
                     <TextosHabitos>
