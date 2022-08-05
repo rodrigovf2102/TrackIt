@@ -22,5 +22,9 @@ function getHabitos(config){
     return promise;
 }
 
+function deletHabito(config,id){
+    const promise = axios.delete(`${Base_URL}/habits/${id}`,config);
+    return promise;   
+}
 
-export {postLogin,postCadastro, getHabitos};
+export {postLogin,postCadastro, getHabitos, postHabito, deletHabito};

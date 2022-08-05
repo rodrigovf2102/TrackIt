@@ -3,7 +3,7 @@ import GlobalStyles from './GlobalSyles';
 import Topo from './Topo/Topo';
 import Login from './Login/Login';
 import Hoje from './Hoje/Hoje';
-import Habitos from './Habitos/Habitos';
+import {Habitos} from './Habitos/Habitos';
 import Fundo from './Fundo/Fundo';
 import Cadastro from './Cadastro/Cadastro';
 import UserContext from './context/UserContext'
