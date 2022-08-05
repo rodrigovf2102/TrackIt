@@ -8,17 +8,19 @@ import Fundo from './Fundo/Fundo';
 import Cadastro from './Cadastro/Cadastro';
 import UserContext from './context/UserContext'
 import { useState } from 'react';
+import HabitContext from './context/HabitContext';
 
 
 export default function App() {
   const [tasks,setTasks] = useState({});
-  
+  const [habitTasks,setHabitTasks] = useState(0);
 
   return (
     <>
       <GlobalStyles />
       <BrowserRouter>
         <UserContext.Provider value={{tasks,setTasks}}>
+        <HabitContext.Provider value={{habitTasks,setHabitTasks}}>
           <Topo />
           <Fundo />
           <Routes>
@@ -27,6 +29,7 @@ export default function App() {
             <Route path={"/habitos"} element={<Habitos />} />
             <Route path={"/hoje"} element={<Hoje />} />
           </Routes>
+        </HabitContext.Provider>
         </UserContext.Provider>
       </BrowserRouter>
     </>

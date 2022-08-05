@@ -33,6 +33,8 @@ export function Habitos() {
         }
     }
 
+    console.log(habitos);
+    
     useEffect(() => {
         let promise = getHabitos(config);
         promise.then(autorizado);

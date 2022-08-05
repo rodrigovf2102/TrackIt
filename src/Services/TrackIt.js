@@ -27,4 +27,19 @@ function deletHabito(config,id){
     return promise;   
 }
 
-export {postLogin,postCadastro, getHabitos, postHabito, deletHabito};
+function getHabitosHoje(config){
+    const promise = axios.get(`${Base_URL}/habits/today`,config);
+    return promise;   
+}
+
+function postHabitosFeitoHoje(habito,config,id){
+    const promise = axios.post(`${Base_URL}/habits/${id}/check`,habito,config);
+    return promise;     
+}
+
+function postHabitosDesfeitoHoje(habito,config,id){
+    const promise = axios.post(`${Base_URL}/habits/${id}/uncheck`,habito,config);
+    return promise;     
+}
+
+export {postLogin,postCadastro, getHabitos, postHabito, deletHabito, getHabitosHoje, postHabitosFeitoHoje,postHabitosDesfeitoHoje};
