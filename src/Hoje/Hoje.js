@@ -7,8 +7,6 @@ import HabitContext from "../context/HabitContext";
 const dayjs = require('dayjs');
 dayjs().format();
 
-
-
 export default function Hoje() {
 
     let weekDay;

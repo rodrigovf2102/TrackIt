@@ -1,13 +1,15 @@
 import styled from "styled-components"
 import { useLocation, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import HabitContext from "../context/HabitContext";
 import 'react-circular-progressbar/dist/styles.css';
 
 export default function Fundo() {
 
     const url = useLocation().pathname;
     const [displayMenu, setDisplayMenu] = useState("");
+    const { habitTasks,setHabitTasks} = useContext(HabitContext);
 
     useEffect(() => {
         if (url === '/' || url === '/cadastro') {
@@ -24,7 +26,7 @@ export default function Fundo() {
             <Link to="/hoje">
                 <Circulo>
                     <CircularProgressbar styles={buildStyles(
-                        {textColor:'#FFFFFF', pathColor:'#FFFFFF', trailColor:'#52B6FF'})} value={10} text={`Hoje`}/>
+                        {textColor:'#FFFFFF', pathColor:'#FFFFFF', trailColor:'#52B6FF'})} value={habitTasks} text={`Hoje`}/>
                 </Circulo>
             </Link>
             <Link to="/historico"><Itens>Histórico</Itens></Link>

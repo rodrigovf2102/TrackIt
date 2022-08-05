@@ -3,6 +3,7 @@ import GlobalStyles from './GlobalSyles';
 import Topo from './Topo/Topo';
 import Login from './Login/Login';
 import Hoje from './Hoje/Hoje';
+import Historico from './Historico/Historico';
 import {Habitos} from './Habitos/Habitos';
 import Fundo from './Fundo/Fundo';
 import Cadastro from './Cadastro/Cadastro';
@@ -28,6 +29,7 @@ export default function App() {
             <Route path={"/cadastro"} element={<Cadastro />} />
             <Route path={"/habitos"} element={<Habitos />} />
             <Route path={"/hoje"} element={<Hoje />} />
+            <Route path={"/historico"} element={<Historico />} />
           </Routes>
         </HabitContext.Provider>
         </UserContext.Provider>
