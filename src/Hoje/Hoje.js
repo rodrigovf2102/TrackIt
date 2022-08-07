@@ -17,7 +17,7 @@ export default function Hoje() {
     if (now.$W === 3) { weekDay = "Quarta-feira"; }
     if (now.$W === 4) { weekDay = "Quinta-feira"; }
     if (now.$W === 5) { weekDay = "Sexta-feira"; }
-    if (now.$W === 6) { weekDay = "Sabado"; }
+    if (now.$W === 6) { weekDay = "Sábado"; }
 
     const { tasks, setTasks } = useContext(UserContext);
     const [habitos, setHabitos] = useState([]);
@@ -30,17 +30,19 @@ export default function Hoje() {
     }
 
     useEffect(() => {
-        const promise = getHabitosHoje(config);
-        promise.then(autorizado)
-        promise.catch(desautorizado)
-        setHabitTasks(0);
-    }, [])
+        if (Object.values(tasks).length > 0) {
+            const promise = getHabitosHoje(config);
+            promise.then(autorizado)
+            promise.catch(desautorizado)
+            setHabitTasks(0);
+        }
+    }, [tasks])
 
     useEffect(() => {
         let total = habitos.length;
         let concluido = habitos.filter(habito => habito.done === true).length;
         let percentual = (100 * concluido / total).toFixed(0);
-        if(habitos.length!==0) {setHabitTasks(percentual);}
+        if (habitos.length !== 0) { setHabitTasks(percentual); }
     }, [habitos])
 
     function autorizado(response) {
@@ -78,11 +80,10 @@ export default function Hoje() {
         }
     }
 
-    console.log(habitTasks);
     return (
         <Container>
             <Data>{weekDay},{` ${now.$D}/${now.$M}`}</Data>
-            {habitTasks!=0 ?
+            {habitTasks != 0 ?
                 <TextoVerde>
                     {habitTasks}% dos hábitos concuídos
                 </TextoVerde> :
@@ -101,7 +102,8 @@ export default function Hoje() {
                         </Sequencia>
                         <Recorde>Seu recorde:
                             <CorRecorde
-                                color={(habito.highestSequence == habito.currentSequence && habito.highestSequence != 0)}>
+                                color={(habito.highestSequence == habito.currentSequence 
+                                && habito.highestSequence != 0 && habito.done == true)}>
                                 {habito.highestSequence} dias
                             </CorRecorde>
                         </Recorde>

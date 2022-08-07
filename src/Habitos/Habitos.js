@@ -10,15 +10,15 @@ export function Habitos() {
     let [habitos, setHabitos] = useState([]);
     const [habitDelId, setHabitDelId] = useState(null);
 
-    const [days, setDays] = useState([{ day: "D", color: "#CFCFCF", backColor: "FFFFFF"},
-    { day: "S", color: "#CFCFCF", backColor: "FFFFFF"}, { day: "T", color: "#CFCFCF", backColor: "FFFFFF"},
-    { day: "Q", color: "#CFCFCF", backColor: "FFFFFF"}, { day: "Q", color: "#CFCFCF", backColor: "FFFFFF"},
-    { day: "S", color: "#CFCFCF", backColor: "FFFFFF"}, { day: "S", color: "#CFCFCF", backColor: "FFFFFF"}]);
+    const [days, setDays] = useState([{ day: "D", color: "#CFCFCF", backColor: "FFFFFF" },
+    { day: "S", color: "#CFCFCF", backColor: "FFFFFF" }, { day: "T", color: "#CFCFCF", backColor: "FFFFFF" },
+    { day: "Q", color: "#CFCFCF", backColor: "FFFFFF" }, { day: "Q", color: "#CFCFCF", backColor: "FFFFFF" },
+    { day: "S", color: "#CFCFCF", backColor: "FFFFFF" }, { day: "S", color: "#CFCFCF", backColor: "FFFFFF" }]);
 
-    const [Habitodays, setHabitoDays] = useState([{ day: "D", color: "#CFCFCF", backColor: "FFFFFF"},
-    { day: "S", color: "#CFCFCF", backColor: "FFFFFF"}, { day: "T", color: "#CFCFCF", backColor: "FFFFFF"},
-    { day: "Q", color: "#CFCFCF", backColor: "FFFFFF"}, { day: "Q", color: "#CFCFCF", backColor: "FFFFFF"},
-    { day: "S", color: "#CFCFCF", backColor: "FFFFFF"}, { day: "S", color: "#CFCFCF", backColor: "FFFFFF"}]);
+    const [habitodays, setHabitoDays] = useState([{ day: "D", color: "#CFCFCF", backColor: "FFFFFF" },
+    { day: "S", color: "#CFCFCF", backColor: "FFFFFF" }, { day: "T", color: "#CFCFCF", backColor: "FFFFFF" },
+    { day: "Q", color: "#CFCFCF", backColor: "FFFFFF" }, { day: "Q", color: "#CFCFCF", backColor: "FFFFFF" },
+    { day: "S", color: "#CFCFCF", backColor: "FFFFFF" }, { day: "S", color: "#CFCFCF", backColor: "FFFFFF" }]);
 
     const [formDisplay, setFormDisplay] = useState("none");
     const [confirmDisplay, setConfirmDisplay] = useState("none");
@@ -34,10 +34,12 @@ export function Habitos() {
     }
 
     useEffect(() => {
-        let promise = getHabitos(config);
-        promise.then(autorizado);
-        promise.catch(desautorizado);
-    }, [])
+        if (Object.values(tasks).length > 0) {
+            let promise = getHabitos(config);
+            promise.then(autorizado);
+            promise.catch(desautorizado);
+        }
+    }, [tasks])
 
     function autorizado(response) {
         setHabitos([...response.data]);
@@ -73,7 +75,6 @@ export function Habitos() {
 
     function salvarHabito() {
         setDisableForm(true);
-
         for (let i = 0; i < days.length; i++) {
             if (days[i].color.toString() === "#FFFFFF") {
                 habito.days.push(i);
@@ -83,10 +84,7 @@ export function Habitos() {
         }
         setHabito({ ...habito });
         setDays([...days]);
-
         const promise = postHabito(habito, config);
-
-
         promise.then(postAutorizado);
         promise.catch(postDesautorizado)
     }
@@ -106,10 +104,10 @@ export function Habitos() {
     }
 
     function deletHabit(id) {
-        if(!disableDelete){
+        if (!disableDelete) {
             setConfirmDisplay("flex");
             setHabitDelId(id);
-        }   
+        }
     }
 
     function cancelarCriacaoHabito() {
@@ -120,6 +118,7 @@ export function Habitos() {
         setDisableDelete(true);
         setConfirmDisplay("none");
         if (response === "cancelar") {
+            setDisableDelete(false);
         }
         if (response === "confirmar") {
             const promise = deletHabito(config, habitDelId.toString());
@@ -159,9 +158,9 @@ export function Habitos() {
                             {habit.name}<ion-icon onClick={() => { deletHabit(habit.id) }} name="trash-outline"></ion-icon>
                         </TituloHabito>
                         <Dias>
-                            {Habitodays.map((dia, iDia) =>
-                            <VerificacaoDia habit={habit} dia={dia} iDia={iDia}></VerificacaoDia>
-                               )}
+                            {habitodays.map((dia, iDia) =>
+                                <VerificacaoDia habit={habit} dia={dia} iDia={iDia}></VerificacaoDia>
+                            )}
                         </Dias></Habito>))}
                 </>
             }

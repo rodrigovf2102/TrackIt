@@ -22,7 +22,7 @@ export default function Topo() {
     return (
         <Top displayTopo={displayTopo}>
             <Titulo>Trackit</Titulo>
-            <Imagem src={tasks.image} />
+            {tasks !==null ? <Imagem src={tasks.image} /> : <Imagem/>}
         </Top>
     )
 }

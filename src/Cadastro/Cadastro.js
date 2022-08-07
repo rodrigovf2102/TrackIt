@@ -36,7 +36,6 @@ export default function Cadastro() {
         setDisableForm(false);
     }
 
-
     return (
         <Container>
             <img alt="1" src={Icone} />

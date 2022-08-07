@@ -45,12 +45,10 @@ const Menu = styled.div`
     align-items: center;
     background-color: white;
 `
-
 const Itens = styled.div`
     font-size: 18px;
     color: #52B6FF;
 `
-
 const Circulo = styled.div`
     width: 91px;
     height: 91px;

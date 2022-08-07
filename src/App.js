@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import GlobalStyles from './GlobalSyles';
 import Topo from './Topo/Topo';
 import Login from './Login/Login';
@@ -8,13 +8,19 @@ import {Habitos} from './Habitos/Habitos';
 import Fundo from './Fundo/Fundo';
 import Cadastro from './Cadastro/Cadastro';
 import UserContext from './context/UserContext'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import HabitContext from './context/HabitContext';
-
 
 export default function App() {
   const [tasks,setTasks] = useState({});
   const [habitTasks,setHabitTasks] = useState(0);
+
+  useEffect(()=>{
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if(userInfo!==null){
+      setTasks(userInfo);
+    }
+  },[])
 
   return (
     <>
@@ -25,7 +31,7 @@ export default function App() {
           <Topo />
           <Fundo />
           <Routes>
-            <Route path="/" element={<Login/>} />
+            <Route path={"/"} element={<Login/>} />
             <Route path={"/cadastro"} element={<Cadastro />} />
             <Route path={"/habitos"} element={<Habitos />} />
             <Route path={"/hoje"} element={<Hoje />} />

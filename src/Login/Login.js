@@ -1,22 +1,29 @@
 import Icone from '../Assets/Img/Icone.png'
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom';
-import {postLogin, setToken} from '../Services/TrackIt';
-import { useState, useContext } from 'react';
+import { postLogin, setToken } from '../Services/TrackIt';
+import { useState, useContext, useEffect } from 'react';
 import { Grid } from 'react-loader-spinner';
 import UserContext from '../context/UserContext';
 
 export default function Login() {
 
-    const [login,setLogin] = useState({email:"",password:""});
+    const [login, setLogin] = useState({ email: "", password: "" });
     const [corEntrar, setCorEntrar] = useState(1)
     const [disableForm, setDisableForm] = useState(false);
     const navigate = useNavigate();
-    const {taks,setTasks} = useContext(UserContext);
+    const { tasks, setTasks } = useContext(UserContext);
 
     function loginInfo(event) {
         event.preventDefault();
     }
+
+    useEffect(() => {
+        console.log(tasks);
+        if (Object.values(tasks).length > 0) {
+            navigate('/hoje');
+        }
+    }, [])
 
     function Login() {
         setCorEntrar(0.6);
@@ -33,22 +40,30 @@ export default function Login() {
     }
 
     function autorizado(response) {
-        setTasks({...response.data});
+        setTasks({ ...response.data });
         setDisableForm(false);
         setCorEntrar(1);
-        navigate('/hoje');
     }
+
+    useEffect(() => {
+        console.log(tasks);
+        if (Object.values(tasks).length > 0) {
+            const info = JSON.stringify(tasks);
+            localStorage.setItem("userInfo", info);
+            navigate('/hoje');
+        }
+    }, [tasks])
 
     return (
         <Container>
             <img alt="1" src={Icone} />
             <Form onSubmit={loginInfo}>
-                <Input type="text" placeholder=' Email' onChange={event => setLogin({...login, email : event.target.value})} 
-                                   disabled={disableForm} required/>
-                <Input type="password" placeholder=' Senha' onChange={event => setLogin({...login, password : event.target.value})} 
-                                   disabled={disableForm} required />
+                <Input type="text" placeholder=' Email' onChange={event => setLogin({ ...login, email: event.target.value })}
+                    disabled={disableForm} required />
+                <Input type="password" placeholder=' Senha' onChange={event => setLogin({ ...login, password: event.target.value })}
+                    disabled={disableForm} required />
                 <Entrar cor={corEntrar} onClick={Login} disabled={disableForm} type="submit">
-                    {disableForm ? <Grid color='white' radius="8" heigth="100"/> :"Entrar"}
+                    {disableForm ? <Grid color='white' radius="8" heigth="100" /> : "Entrar"}
                 </Entrar>
                 <Link to="/cadastro"><Cadastrar>Não tem uma conta? Cadastre-se</Cadastrar></Link>
             </Form>
@@ -63,41 +78,37 @@ const Container = styled.div`
     align-items: center;
     height: 100%;
 `
-
 const Form = styled.form`
-margin-top: 50px;
-display: flex;
-flex-direction: column;
-align-items: center;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
-
 const Input = styled.input`
-width: 303px;
-height: 45px;
-border: 1px solid #D5D5D5;
-border-radius: 5px;
-margin-bottom: 10px;
+    width: 303px;
+    height: 45px;
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    margin-bottom: 10px;
 `
-
 const Entrar = styled.button`
-width: 303px;
-height: 45px;
-background: #52B6FF;
-border-radius: 5px;
-color: white;
-font-size: 21px;
-opacity: ${props => props.cor};
-display: flex;
-justify-content: center;
-align-items: center;
-overflow-y: hidden;
+    width: 303px;
+    height: 45px;
+    background: #52B6FF;
+    border-radius: 5px;
+    color: white;
+    font-size: 21px;
+    opacity: ${props => props.cor};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: hidden;
 `
-
 const Cadastrar = styled.div`
-text-decoration-line: underline;
-width: 232px;
-color: #52B6FF;
-font-size: 14px;
-margin-top: 25px;
+    text-decoration-line: underline;
+    width: 232px;
+    color: #52B6FF;
+    font-size: 14px;
+    margin-top: 25px;
 `
-export {Container,Form,Input,Entrar,Cadastrar};
+export { Container, Form, Input, Entrar, Cadastrar };
