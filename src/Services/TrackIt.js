@@ -42,4 +42,13 @@ function postHabitosDesfeitoHoje(habito,config,id){
     return promise;     
 }
 
-export {postLogin,postCadastro, getHabitos, postHabito, deletHabito, getHabitosHoje, postHabitosFeitoHoje,postHabitosDesfeitoHoje};
+function getHistoricoHabitos(config){
+    const promise = axios.get(`${Base_URL}/habits/history/daily`,config);
+    return promise;     
+}
+
+
+
+export {postLogin,postCadastro, getHabitos, postHabito, 
+        deletHabito, getHabitosHoje, postHabitosFeitoHoje,
+        postHabitosDesfeitoHoje, getHistoricoHabitos};

@@ -19,7 +19,6 @@ export default function Login() {
     }
 
     useEffect(() => {
-        console.log(tasks);
         if (Object.values(tasks).length > 0) {
             navigate('/hoje');
         }
@@ -46,7 +45,6 @@ export default function Login() {
     }
 
     useEffect(() => {
-        console.log(tasks);
         if (Object.values(tasks).length > 0) {
             const info = JSON.stringify(tasks);
             localStorage.setItem("userInfo", info);

@@ -1,26 +1,24 @@
 import styled from "styled-components";
 import { useEffect, useState, useContext } from "react";
-import { getHabitosHoje, postHabitosFeitoHoje, postHabitosDesfeitoHoje } from "../Services/TrackIt";
+import { getHabitosHoje, postHabitosFeitoHoje, postHabitosDesfeitoHoje, getHistoricoHabitos } from "../Services/TrackIt";
 import UserContext from "../context/UserContext";
 import HabitContext from "../context/HabitContext";
+import 'dayjs/locale/pt-br';
+
 
 const dayjs = require('dayjs');
 dayjs().format();
+dayjs.locale('pt-br');
 
 export default function Hoje() {
 
     let weekDay;
-    let now = dayjs(new Date());
-    if (now.$W === 0) { weekDay = "Domingo"; }
-    if (now.$W === 1) { weekDay = "Segunda-feira"; }
-    if (now.$W === 2) { weekDay = "Terça-feira"; }
-    if (now.$W === 3) { weekDay = "Quarta-feira"; }
-    if (now.$W === 4) { weekDay = "Quinta-feira"; }
-    if (now.$W === 5) { weekDay = "Sexta-feira"; }
-    if (now.$W === 6) { weekDay = "Sábado"; }
+    let now = dayjs();
+    weekDay = now.format('dddd');
 
     const { tasks, setTasks } = useContext(UserContext);
     const [habitos, setHabitos] = useState([]);
+    const [historicoHabitos, setHistoricoHabitos] = useState([]);
     const { habitTasks, setHabitTasks } = useContext(HabitContext);
 
     const config = {
@@ -39,18 +37,48 @@ export default function Hoje() {
     }, [tasks])
 
     useEffect(() => {
+        if (Object.values(tasks).length > 0) {
+            const promise = getHistoricoHabitos(config);
+            promise.then(autorizadoHistorico)
+            promise.catch(desautorizado)
+        }
+    }, [tasks])
+
+    useEffect(() => {
         let total = habitos.length;
         let concluido = habitos.filter(habito => habito.done === true).length;
         let percentual = (100 * concluido / total).toFixed(0);
         if (habitos.length !== 0) { setHabitTasks(percentual); }
     }, [habitos])
 
+    useEffect(() => {
+        if(habitos.length>0) {
+            verificarSequenciaHabito();
+        }
+        setHabitos([...habitos]);
+    }, [historicoHabitos])
+
+    function verificarSequenciaHabito() {
+        for(let i=0;i<habitos.length;i++){
+            const value = historicoHabitos.map(day => day.habits.filter(habit => habit.id === habitos[i].id));
+            if (value[1].length > 0) {
+                if (value[1][0].done === false && habitos[i].currentSequence>1) {
+                    habitos[i].currentSequence = 0;
+                }
+            }
+        }
+    }
+
     function autorizado(response) {
         setHabitos([...response.data])
     }
 
+    function autorizadoHistorico(response) {
+        setHistoricoHabitos([...response.data])
+    }
+
     function desautorizado() {
-        alert("Faça login novamente");
+        alert("Requisicao negada");
     }
 
     function concluirHabito(index) {
@@ -66,6 +94,7 @@ export default function Hoje() {
         if (habitos[index].currentSequence > habitos[index].highestSequence) {
             habitos[index].highestSequence = habitos[index].currentSequence;
         }
+
         setHabitos([...habitos]);
 
         if (habitos[index].done === true) {
@@ -102,8 +131,8 @@ export default function Hoje() {
                         </Sequencia>
                         <Recorde>Seu recorde:
                             <CorRecorde
-                                color={(habito.highestSequence == habito.currentSequence 
-                                && habito.highestSequence != 0 && habito.done == true)}>
+                                color={(habito.highestSequence == habito.currentSequence
+                                    && habito.highestSequence != 0 && habito.done == true)}>
                                 {habito.highestSequence} dias
                             </CorRecorde>
                         </Recorde>
