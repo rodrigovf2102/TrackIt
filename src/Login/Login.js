@@ -75,6 +75,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     height: 100%;
+    background-color: white;
 `
 const Form = styled.form`
     margin-top: 50px;
