@@ -56,9 +56,8 @@ button{
 
 body{
     width:100%;
-    font-family: 'Lexend Deca', sans-serif;
 	height: 100vh;
-	overflow-y: scroll;
+    font-family: 'Lexend Deca', sans-serif;
 }
 
 .root{

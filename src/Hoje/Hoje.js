@@ -150,10 +150,11 @@ export default function Hoje() {
 const Container = styled.div`
     margin-top: 70px;
     background-color: #E5E5E5;
-    height: 100vh;
     margin-bottom: 70px;
     padding-left: 18px;
-    overflow-y: scroll;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 `
 const Data = styled.div`
     font-size: 23px;

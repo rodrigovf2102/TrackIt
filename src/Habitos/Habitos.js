@@ -171,8 +171,6 @@ export function Habitos() {
 const Container = styled.div`
     margin-top: 70px;
     background-color: #E5E5E5;
-    height: 100%;
-    overflow-y: scroll;
     margin-bottom: 70px;
     display: flex;
     flex-direction: column;

@@ -93,9 +93,9 @@ const Container = styled.div`
     margin-top: 70px;
     margin-bottom: 70px;
     padding-left: 17px;
-    overflow-y: scroll;
     display: flex;
     flex-direction: column;
+
 `
 const Titulo = styled.div`
     color: #126BA5;
