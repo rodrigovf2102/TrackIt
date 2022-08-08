@@ -5,7 +5,6 @@ import UserContext from "../context/UserContext";
 import HabitContext from "../context/HabitContext";
 import 'dayjs/locale/pt-br';
 
-
 const dayjs = require('dayjs');
 dayjs().format();
 dayjs.locale('pt-br');
@@ -82,6 +81,7 @@ export default function Hoje() {
     }
 
     function concluirHabito(index) {
+        
         habitos[index].done = !habitos[index].done;
 
         if (habitos[index].done === true) { habitos[index].currentSequence += 1 }
@@ -147,14 +147,13 @@ export default function Hoje() {
     )
 }
 
-
-
 const Container = styled.div`
     margin-top: 70px;
     background-color: #E5E5E5;
     height: 100vh;
     margin-bottom: 70px;
     padding-left: 18px;
+    overflow-y: scroll;
 `
 const Data = styled.div`
     font-size: 23px;
@@ -180,12 +179,13 @@ const Habito = styled.div`
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
-    
+    :last-child{
+        margin-bottom: 80px;
+    }
 `
 const TextosHabitos = styled.div`
     margin-left: 15px;
 `
-
 const HabitoTitulo = styled.div`
     color: #666666;
     font-size: 20px;
@@ -213,9 +213,8 @@ const CorSequencia = styled.span`
     color: ${props => props.color ? '#8FC549' : '#666666'};
 `
 const CorRecorde = styled.span`
-    color: ${props => props.color ? '#8FC549' : '#666666'}
-`
-
+    color: ${props => props.color ? '#8FC549' : '#666666'};
+    `
 const Recorde = styled.div`
     color: #666666;
     font-size: 13px;
